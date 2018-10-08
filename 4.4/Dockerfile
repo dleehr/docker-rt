@@ -17,7 +17,7 @@ RUN cd /usr/local/src \
     --enable-developer \
     --enable-gd \
     --enable-graphviz \
-    --with-db-type=SQLite \
+    --with-db-type=Pg \
   && make install \
   && make initdb \
   && rm -rf /usr/local/src/*
