@@ -137,16 +137,15 @@ RUN cd /usr/local/src \
     --enable-gd \
     --enable-graphviz \
     --with-db-type=Pg \
-  && make install \
-  && make initdb \
-  && rm -rf /usr/local/src/*
+  && make install
+
+# Removed "make initdb" because that depends on separate database service
+
+RUN chown -R www-data:www-data /opt/rt4/var/
+COPY RT_SiteConfig.pm /opt/rt4/etc/RT_SiteConfig.pm
 
 COPY apache.rt.conf /etc/apache2/sites-available/rt.conf
 RUN a2dissite 000-default.conf && a2ensite rt.conf
-
-RUN chown -R www-data:www-data /opt/rt4/var/
-
-COPY RT_SiteConfig.pm /opt/rt4/etc/RT_SiteConfig.pm
 
 # /etc/apache2/envvars isn't sourced by default
 ENV APACHE_LOCK_DIR=/var/lock/apache2 \
